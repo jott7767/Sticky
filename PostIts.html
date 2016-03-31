@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css" />
+    <link rel='stylesheet' type='text/css' href='postit.css' />
+    <title>The Postits</title>
+  </head>
+    <body>
+      <div id='content' class='container'>
+      </div>
+      <script type='text/babel'>
+        class Board extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = {stickyNotes: []};
+            this.addNote = this.addNote.bind(this);
+          }
+
+          addNote(e) {
+            e.preventDefault();
+            let stickyNotes = this.state.stickyNotes;
+            stickyNotes.unshift({
+              title: this.refs.title.value
+            });
+            this.refs.title.value = null;
+            this.setState({ stickyNotes: stickyNotes})
+          }
+
+          notes() {
+            let notees = this.state.stickyNotes.map(function(note) {
+              console.log(note);
+              return(note.title);
+            });
+            return(notees);
+          }
+
+          render() {
+            return(<div className='center post-it'>
+                      <h1>Sticky Notes</h1>
+                      <form onSubmit={this.addNote}>
+                        <input id='title' placeholder='write note here' type='text' ref='title' />
+                        <button type='submit' name='action' className='pink accent-3 waves-effect waves-light btn'>Add Note</button>
+                      </form>
+                      <hr />
+                        {this.notes()}
+                   </div>);
+          }
+        }
+
+        ReactDOM.render(<Board />, document.getElementById('content'));
+      </script>
+    </body>
+</html>
